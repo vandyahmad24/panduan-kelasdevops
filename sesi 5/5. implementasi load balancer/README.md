@@ -13,5 +13,25 @@
      docker run --name laravel-app -p 9000:80 -d <username_docker_hub>/laravel-app:v1
      ```
 4. Buat Load balancer dengan settingan berikut.
-    [source](https://raw.githubusercontent.com/agung3wi/panduan-kelasdevops/master/sesi%205/5.%20implementasi%load%20balancer/nginx.conf).
+
+   ```
+     upstream loadBalancer {
+     server 127.0.0.1:7000;
+     server 127.0.0.1:8000;
+     server 127.0.0.1:9000;
+
+     server {
+     listen 80;
+     listen [::]80;
+     server_name lb.vandyrazy.online;
+
+     location / {
+     proxy_set_header Host $host:$server_port;
+     proxy_pass http://loadbalancer/;
+   }
+   
+   }
+
+   }
+   ```
 
